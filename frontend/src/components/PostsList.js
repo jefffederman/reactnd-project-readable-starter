@@ -12,7 +12,7 @@ export default class PostsList extends Component {
   }
 
   render() {
-    const { posts, onVote, onDelete } = this.props;
+    const { posts } = this.props;
     return (
       <table className="table">
         <thead>
@@ -31,8 +31,6 @@ export default class PostsList extends Component {
                 post={post}
                 key={post.id}
                 commentCount={this.commentCount(post)}
-                onVote={onVote}
-                onDelete={onDelete}
               />
             )
           }) }

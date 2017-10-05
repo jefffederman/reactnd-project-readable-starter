@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
+import { vote, deletePost } from '../actions'
 
-export default class PostItem extends Component {
+class PostItem extends Component {
   render() {
     const { title, author, voteScore, id } = this.props.post;
     const { commentCount, onVote, onDeletePost } = this.props;
@@ -36,3 +38,18 @@ export default class PostItem extends Component {
     )
   }
 }
+
+const mapStateToProps = ({ posts, comments, categories }) => {
+  return {
+    posts,
+    comments,
+    categories
+  }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  onVote: (id, option) => dispatch(vote(id, option)),
+  onDeletePost: (id) => dispatch(deletePost(id))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostItem)

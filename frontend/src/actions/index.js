@@ -44,7 +44,7 @@ export function getPosts() {
 
 export function vote(id, option) {
   return (dispatch) => {
-    fetch(`${baseURL}/posts/${id}`, {
+    return fetch(`${baseURL}/posts/${id}`, {
       method: 'POST',
       headers,
       body: JSON.stringify({ option })
@@ -59,7 +59,7 @@ export function vote(id, option) {
 
 export function deletePost(id) {
   return (dispatch) => {
-    fetch(`${baseURL}/posts/${id}`, {
+    return fetch(`${baseURL}/posts/${id}`, {
       method: 'DELETE',
       headers
     })
@@ -68,5 +68,6 @@ export function deletePost(id) {
       type: DELETE_POST,
       id
     }))
+    .then(() => getPosts()(dispatch))
   }
 }

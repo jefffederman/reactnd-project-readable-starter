@@ -10,64 +10,50 @@ import {
   VOTE
 } from '../actions';
 
-function posts(state = {}, action) {
+function posts(posts = [], action) {
   switch (action.type) {
   case GET_POSTS:
-    return {
-      ...state,
-      posts: action.posts
-    }
+    return action.posts;
 
   case DELETE_POST:
-    return {
-      ...state,
-      posts: state.posts.map((post) => {
-        if (post.id === action.id) {
-          post.deleted = true
-        }
-        return post
-      })
-    }
+    return posts.map((post) => {
+      if (post.id === action.id) {
+        post.deleted = true
+      }
+      return post
+    })
 
   case VOTE:
-    return {
-      ...state,
-      posts: state.posts.map((post) => {
-        if (post.id === action.post.id) {
-          return action.post;
-        }
-        return post;
-      })
-    }
+    return posts.map((post) => {
+      if (post.id === action.post.id) {
+        return action.post;
+      }
+      return post;
+    })
 
   default:
-    return state;
+    return posts;
   }
 }
 
-function comments(state = {}, action) {
+function comments(comments = [], action) {
+  console.log(action.comments)
   switch (action.type) {
   case GET_COMMENTS:
-    return {
-      ...state,
-      comments: action.comments
-    }
+    return comments.concat(action.comments);
 
   default:
-    return state;
+    return comments;
   }
 }
 
-function categories(state = {}, action) {
+function categories(categories = [], action) {
   switch (action.type) {
   case GET_CATEGORIES:
-    return {
-      ...state,
-      categories: action.categories
-    }
+    return action.categories;
 
   default:
-    return state;
+    return categories;
   }
 }
 
