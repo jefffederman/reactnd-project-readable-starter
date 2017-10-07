@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
 import { vote, deletePost } from '../actions'
@@ -26,7 +27,9 @@ class PostItem extends Component {
         </td>
         <td>
           <button className="button">
-            <i className="fa fa-pencil"></i>
+            <Link to={`/posts/${id}/edit`}>
+              <i className="fa fa-pencil"></i>
+            </Link>
           </button>
         </td>
         <td>

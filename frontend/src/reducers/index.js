@@ -37,7 +37,6 @@ function posts(posts = [], action) {
 }
 
 function comments(comments = [], action) {
-  console.log(action.comments)
   switch (action.type) {
   case GET_COMMENTS:
     return comments.concat(action.comments);

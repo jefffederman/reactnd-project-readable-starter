@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Route } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
 import PostsList from './PostsList';
+import PostForm from './PostForm';
 import { getPosts } from '../actions'
 
 class App extends Component {
@@ -24,11 +26,21 @@ class App extends Component {
 
   render() {
     return (
-      <div className="container">
-        <PostsList
-          posts={this.props.posts}
-          comments={this.props.comments}
-        />
+      <div className="container content">
+        <div className="columns">
+          <Route path="/posts/:id/edit" render={({ match }) => (
+            <PostForm
+              postId={match.params.id}
+            />
+          )}>
+          </Route>
+          <Route exact path="/" render={() => (
+            <PostsList
+              posts={this.props.posts}
+              comments={this.props.comments}
+            />
+          )} />
+        </div>
       </div>
     );
   }
@@ -46,4 +58,5 @@ const mapDispatchToProps = (dispatch) => ({
   onGetPosts: () => dispatch(getPosts())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+// FIXME: See https://github.com/reactjs/react-redux/blob/master/docs/troubleshooting.md#my-views-arent-updating-when-something-changes-outside-of-redux
+export default connect(mapStateToProps, mapDispatchToProps, null, { pure: false })(App);
