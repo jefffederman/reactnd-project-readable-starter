@@ -14,28 +14,31 @@ export default class PostsList extends Component {
   render() {
     const { posts } = this.props;
     return (
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Comment count</th>
-            <th>Current score</th>
-            <th colSpan='4'>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          { posts.map((post) => {
-            return (
-              <PostItem
-                post={post}
-                key={post.id}
-                commentCount={this.commentCount(post)}
-              />
-            )
-          }) }
-        </tbody>
-      </table>
+      <div className="column">
+        <h1>Posts</h1>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Comment count</th>
+              <th>Current score</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            { posts.map((post) => {
+              return (
+                <PostItem
+                  post={post}
+                  key={post.id}
+                  commentCount={this.commentCount(post)}
+                />
+              )
+            }) }
+          </tbody>
+        </table>
+      </div>
     )
   }
 }

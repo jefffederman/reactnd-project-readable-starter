@@ -15,27 +15,29 @@ class PostItem extends Component {
         <td>{author}</td>
         <td>{commentCount}</td>
         <td>{voteScore}</td>
-        <td>
-          <button className="button" onClick={() => onVote(id, 'upVote')}>
-            <i className="fa fa-thumbs-o-up"></i>
-          </button>
-        </td>
-        <td>
-          <button className="button" onClick={() => onVote(id, 'downVote')}>
-            <i className="fa fa-thumbs-o-down"></i>
-          </button>
-        </td>
-        <td>
-          <button className="button">
-            <Link to={`/posts/${id}/edit`}>
-              <i className="fa fa-pencil"></i>
-            </Link>
-          </button>
-        </td>
-        <td>
-          <button className="button is-outlined is-danger" onClick={() => onDeletePost(id)}>
-            <i className="fa fa-trash-o"></i>
-          </button>
+        <td className="field is-grouped">
+          <p className="control">
+            <button className="button" onClick={() => onVote(id, 'upVote')}>
+              <i className="fa fa-thumbs-o-up"></i>
+            </button>
+          </p>
+          <p className="control">
+            <button className="button" onClick={() => onVote(id, 'downVote')}>
+              <i className="fa fa-thumbs-o-down"></i>
+            </button>
+          </p>
+          <p className="control">
+            <button className="button">
+              <Link to={`/posts/${id}/edit`}>
+                <i className="fa fa-pencil"></i>
+              </Link>
+            </button>
+          </p>
+          <p className="control">
+            <button className="button is-outlined is-danger" onClick={() => onDeletePost(id)}>
+              <i className="fa fa-trash-o"></i>
+            </button>
+          </p>
         </td>
       </tr>
     )

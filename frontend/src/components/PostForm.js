@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
 
-export default class PostForm extends Component {
-  // perhaps save bare attrs instead of namespaced under post
+class PostForm extends Component {
+
   state = {
     post: {
       title: '',
-      author: ''
+      author: '',
+      body: ''
     }
   }
 
@@ -31,7 +33,7 @@ export default class PostForm extends Component {
     let options = {
       headers: this.headers,
       method: 'POST',
-      body: JSON.stringify(e.target.value)
+      body: JSON.stringify(this.state.post)
     };
 
     if (postId) {
@@ -51,8 +53,7 @@ export default class PostForm extends Component {
     e.preventDefault()
     const { url, options } = this.actionData(e);
     fetch(url, options)
-    .then((res) => res.json())
-    .then((json) => console.info(json))
+    .then(() => this.props.history.push('/'))
   }
 
   handleChange(e) {
@@ -129,3 +130,5 @@ export default class PostForm extends Component {
     )
   }
 }
+
+export default withRouter(PostForm);
