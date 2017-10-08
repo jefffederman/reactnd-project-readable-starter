@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
+import { getPosts } from '../actions'
 
 class PostForm extends Component {
 
@@ -53,6 +55,7 @@ class PostForm extends Component {
     e.preventDefault()
     const { url, options } = this.actionData(e);
     fetch(url, options)
+    .then(() => this.props.onGetPosts())
     .then(() => this.props.history.push('/'))
   }
 
@@ -131,4 +134,11 @@ class PostForm extends Component {
   }
 }
 
-export default withRouter(PostForm);
+const mapDispatchToProps = (dispatch) => ({
+  onGetPosts: () => dispatch(getPosts())
+})
+
+// See https://hackernoon.com/withrouter-advanced-features-of-react-router-for-single-page-apps-42b2a1a0d315
+export default withRouter(
+  connect(null, mapDispatchToProps)(PostForm)
+);
