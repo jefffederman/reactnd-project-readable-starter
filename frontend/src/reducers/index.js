@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 import {
   GET_POSTS,
-  SORT_POSTS,
   CREATE_POST,
   EDIT_POST,
   DELETE_POST,
@@ -13,7 +12,13 @@ import {
 function posts(posts = [], action) {
   switch (action.type) {
   case GET_POSTS:
-    return action.posts;
+    // FIXME: get routing to trigger action dispatch for query params
+    const { sort, dir } = action;
+    const sorted = action.posts.sort((a, b) => a[sort] - b[sort]);
+    if (dir === 'desc') {
+      return sorted.reverse()
+    }
+    return sorted;
 
   case DELETE_POST:
     return posts.map((post) => {

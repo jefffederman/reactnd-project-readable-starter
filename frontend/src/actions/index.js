@@ -1,5 +1,4 @@
 export const GET_POSTS = 'GET_POSTS'
-export const SORT_POSTS = 'SORT_POSTS'
 export const CREATE_POST = 'CREATE_POST'
 export const EDIT_POST = 'EDIT_POST'
 export const DELETE_POST = 'DELETE_POST'
@@ -13,7 +12,15 @@ const headers = {
   'Content-Type': 'application/json'
 };
 
-export function getPosts() {
+export function getPosts(sort, dir) {
+  if (typeof sort === 'undefined') {
+    sort = 'createdAt';
+  }
+
+  if (typeof dir === 'undefined') {
+    dir = 'desc';
+  }
+
   return (dispatch) => {
     // get posts
     fetch(`${baseURL}/posts`, {
@@ -23,7 +30,9 @@ export function getPosts() {
     .then((res) => res.json())
     .then((posts) => dispatch({
       type: GET_POSTS,
-      posts
+      posts,
+      sort,
+      dir
     }))
     // get comments
     .then(({ posts }) => {

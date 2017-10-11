@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
-import { getPosts } from '../actions'
+import uuidv4 from 'uuid/v4';
 
-class PostForm extends Component {
+export default class PostForm extends Component {
 
   state = {
     post: {
+      id: uuidv4(),
       title: '',
       author: '',
-      body: ''
-    }
+      body: '',
+      category: '',
+      timestamp: Date.now()
+    },
+    redirect: false
   }
 
   baseURL = 'http://localhost:3001'
@@ -55,8 +58,7 @@ class PostForm extends Component {
     e.preventDefault()
     const { url, options } = this.actionData(e);
     fetch(url, options)
-    .then(() => this.props.onGetPosts())
-    .then(() => this.props.history.push('/'))
+    .then(() => this.setState({ redirect: true }))
   }
 
   handleChange(e) {
@@ -71,17 +73,24 @@ class PostForm extends Component {
   }
 
   componentDidMount() {
-    // get the post
-    fetch(`${this.baseURL}/posts/${this.props.postId}`, {
-      method: 'GET',
-      headers: this.headers
-    })
-    .then((res) => res.json())
-    .then((post) => this.setState({ post }))
+    const { postId } = this.props;
+
+    if (postId) {
+      fetch(`${this.baseURL}/posts/${this.props.postId}`, {
+        method: 'GET',
+        headers: this.headers
+      })
+      .then((res) => res.json())
+      .then((post) => this.setState({ post }))
+    }
   }
 
   render() {
-    const { post } = this.state;
+    const { post, redirect } = this.state;
+
+    if (redirect) {
+      return <Redirect push to="/" />;
+    }
 
     return (
       <div className="column is-half">
@@ -114,6 +123,19 @@ class PostForm extends Component {
           </div>
 
           <div className="field">
+            <label className="label">Category</label>
+            <div className="control">
+              <input
+                className="input"
+                type="text"
+                name="category"
+                value={post.category}
+                onChange={(e) => this.handleChange(e)}
+              />
+            </div>
+          </div>
+
+          <div className="field">
             <label className="label">Body</label>
             <div className="control">
               <textarea
@@ -133,12 +155,3 @@ class PostForm extends Component {
     )
   }
 }
-
-const mapDispatchToProps = (dispatch) => ({
-  onGetPosts: () => dispatch(getPosts())
-})
-
-// See https://hackernoon.com/withrouter-advanced-features-of-react-router-for-single-page-apps-42b2a1a0d315
-export default withRouter(
-  connect(null, mapDispatchToProps)(PostForm)
-);
