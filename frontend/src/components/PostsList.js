@@ -5,7 +5,7 @@ import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
 import queryString from 'query-string';
 import PostItem from './PostItem';
-import { getPosts, vote, deletePost } from '../actions';
+import { vote, deletePost } from '../actions';
 
 class PostsList extends Component {
   commentCount(post) {
@@ -15,14 +15,9 @@ class PostsList extends Component {
     }).length
   }
 
-  componentDidMount() {
-    const { onGetPosts, search } = this.props;
-    const { sort, dir } = queryString.parse(search);
-    onGetPosts(sort, dir)
-  }
-
   render() {
     const { posts, onVote, onDeletePost } = this.props;
+    const { dir } = this.props.meta;
     return (
       <div className="column">
         <h1>Posts</h1>
@@ -37,7 +32,7 @@ class PostsList extends Component {
                   pathname: '/',
                   search: queryString.stringify({
                     sort: 'timestamp',
-                    dir: 'desc'
+                    dir
                   })
                 }}>
                   Created at
@@ -49,7 +44,7 @@ class PostsList extends Component {
                   pathname: '/',
                   search: queryString.stringify({
                     sort: 'voteScore',
-                    dir: 'desc'
+                    dir
                   })
                 }}>
                   Current score
@@ -79,7 +74,6 @@ class PostsList extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  onGetPosts: (sort, dir) => dispatch(getPosts(sort, dir)),
   onVote: (id, option) => dispatch(vote(id, option)),
   onDeletePost: (id) => dispatch(deletePost(id))
 })

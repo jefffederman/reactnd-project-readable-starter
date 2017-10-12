@@ -61,8 +61,27 @@ function categories(categories = [], action) {
   }
 }
 
+function meta(meta = {}, action) {
+  switch (action.type) {
+  case GET_POSTS:
+    console.log('Inside meta:GET_POSTS')
+    const { sort, dir } = action;
+    if (sort === meta.sort) {
+      const dir = dir === 'asc' ? 'desc' : 'asc'
+    }
+    return {
+      ...meta,
+      sort,
+      dir
+    }
+  default:
+    return meta;
+  }
+}
+
 export default combineReducers({
   posts,
   comments,
-  categories
+  categories,
+  meta
 });
