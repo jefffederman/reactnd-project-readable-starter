@@ -16,7 +16,7 @@ class PostsList extends Component {
   }
 
   render() {
-    const { posts, onDeletePost } = this.props;
+    const { posts, onDeletePost, onVote } = this.props;
     const { dir } = this.props.meta;
     return (
       <div className="column">
@@ -62,6 +62,7 @@ class PostsList extends Component {
                   key={post.id}
                   commentCount={this.commentCount(post)}
                   onDeletePost={onDeletePost}
+                  onVote={onVote}
                 />
               )
             }) }
