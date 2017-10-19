@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
 import Voter from './Voter';
+import DeleteButton from './DeleteButton';
 
 export default class PostItem extends Component {
   formatTimestamp(timestamp) {
@@ -44,9 +45,7 @@ export default class PostItem extends Component {
           </button>
         </td>
         <td>
-          <button className="button is-outlined is-danger" onClick={() => onDeletePost(id)}>
-            <i className="fa fa-trash-o"></i>
-          </button>
+          <DeleteButton onDelete={onDeletePost} id={id} />
         </td>
       </tr>
     )

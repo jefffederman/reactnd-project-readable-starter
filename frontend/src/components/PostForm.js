@@ -13,7 +13,8 @@ export default class PostForm extends Component {
       author: '',
       body: '',
       category: '',
-      timestamp: Date.now()
+      timestamp: Date.now(),
+      deleted: false
     },
     redirect: false
   }
