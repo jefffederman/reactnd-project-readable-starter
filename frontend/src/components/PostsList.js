@@ -5,7 +5,7 @@ import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
 import queryString from 'query-string';
 import PostItem from './PostItem';
-import { vote, deletePost } from '../actions';
+import { deletePost } from '../actions';
 
 class PostsList extends Component {
   commentCount(post) {
@@ -16,7 +16,7 @@ class PostsList extends Component {
   }
 
   render() {
-    const { posts, onVote, onDeletePost } = this.props;
+    const { posts, onDeletePost } = this.props;
     const { dir } = this.props.meta;
     return (
       <div className="column">
@@ -61,7 +61,6 @@ class PostsList extends Component {
                   post={post}
                   key={post.id}
                   commentCount={this.commentCount(post)}
-                  onVote={onVote}
                   onDeletePost={onDeletePost}
                 />
               )
@@ -74,7 +73,6 @@ class PostsList extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  onVote: (id, option) => dispatch(vote(id, option)),
   onDeletePost: (id) => dispatch(deletePost(id))
 })
 

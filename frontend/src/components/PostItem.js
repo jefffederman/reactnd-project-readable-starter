@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
+import Voter from './Voter';
 
 export default class PostItem extends Component {
   formatTimestamp(timestamp) {
@@ -23,21 +24,17 @@ export default class PostItem extends Component {
     const { commentCount, onVote, onDeletePost } = this.props;
     return (
       <tr>
-        <td>{title}</td>
+        <td><Link to={`/posts/${id}`}>{title}</Link></td>
         <td>{author}</td>
         <td>{this.formatTimestamp(timestamp)}</td>
         <td>{commentCount}</td>
         <td>{voteScore}</td>
         <td>{category}</td>
         <td>
-          <button className="button" onClick={() => onVote(id, 'upVote')}>
-            <i className="fa fa-thumbs-o-up"></i>
-          </button>
+          <Voter onVote={onVote} id={id} direction="up" />
         </td>
         <td>
-          <button className="button" onClick={() => onVote(id, 'downVote')}>
-            <i className="fa fa-thumbs-o-down"></i>
-          </button>
+          <Voter onVote={onVote} id={id} direction="down" />
         </td>
         <td>
           <button className="button">

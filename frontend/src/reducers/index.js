@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import {
   GET_POSTS,
   CREATE_POST,
+  GET_POST,
   EDIT_POST,
   DELETE_POST,
   GET_COMMENTS,
@@ -41,6 +42,19 @@ function posts(posts = [], action) {
   }
 }
 
+function currentPost(currentPost = null, action) {
+  switch (action.type) {
+  case GET_POST:
+    return action.currentPost;
+
+  case VOTE:
+    return action.post;
+
+  default:
+    return currentPost;
+  }
+}
+
 function comments(comments = [], action) {
   switch (action.type) {
   case GET_COMMENTS:
@@ -64,7 +78,6 @@ function categories(categories = [], action) {
 function meta(meta = {}, action) {
   switch (action.type) {
   case GET_POSTS:
-    console.log('Inside meta:GET_POSTS')
     const { sort, dir } = action;
     if (sort === meta.sort) {
       const dir = dir === 'asc' ? 'desc' : 'asc'
@@ -81,6 +94,7 @@ function meta(meta = {}, action) {
 
 export default combineReducers({
   posts,
+  currentPost,
   comments,
   categories,
   meta

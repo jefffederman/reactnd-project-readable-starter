@@ -1,5 +1,6 @@
 export const GET_POSTS = 'GET_POSTS'
 export const CREATE_POST = 'CREATE_POST'
+export const GET_POST = 'GET_POST'
 export const EDIT_POST = 'EDIT_POST'
 export const DELETE_POST = 'DELETE_POST'
 export const GET_COMMENTS = 'GET_COMMENTS'
@@ -62,6 +63,20 @@ export function vote(id, option) {
     .then((post) => dispatch({
       type: VOTE,
       post
+    }))
+  }
+}
+
+export function getPost(id) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/posts/${id}`, {
+      method: 'GET',
+      headers
+    })
+    .then((res) => res.json())
+    .then((currentPost) => dispatch({
+      type: GET_POST,
+      currentPost
     }))
   }
 }

@@ -12,7 +12,7 @@ import reducer from './reducers';
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const store = createStore(
   reducer,
-  { posts: [], comments: [], categories: [], meta: {} },
+  { posts: [], currentPost: null, comments: [], categories: [], meta: {} },
   composeEnhancers(applyMiddleware(thunk))
 )
 

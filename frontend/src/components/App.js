@@ -6,21 +6,17 @@ import 'bulma/css/bulma.css';
 import queryString from 'query-string';
 import PostsList from './PostsList';
 import PostForm from './PostForm';
-import { getPosts } from '../actions';
+import Post from './Post';
+import { getPosts, vote, getPost } from '../actions';
 
 class App extends Component {
   state = {
     posts: [],
+    currentPost: null,
     comments: [],
     categories: [],
     meta: {}
   }
-
-  baseURL = 'http://localhost:3001';
-  headers = {
-    'Authorization': 'totesauthd',
-    'Content-Type': 'application/json'
-  };
 
   componentDidMount() {
     const { onGetPosts, search } = this.props;
@@ -42,12 +38,22 @@ class App extends Component {
             />
           )}>
           </Route>
+          <Route exact path="/posts/:id" render={({ match }) => (
+            <Post
+              id={match.params.id}
+              onVote={this.props.onVote}
+              onGetPost={this.props.onGetPost}
+              currentPost={this.props.currentPost}
+            />
+          )}>
+          </Route>
           <Route exact path="/" render={({ location }) => (
             <PostsList
               posts={this.props.posts}
               comments={this.props.comments}
               search={location.search}
               meta={this.props.meta}
+              onVote={this.props.onVote}
             />
           )} />
         </div>
@@ -56,9 +62,10 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = ({ posts, comments, categories, meta }) => {
+const mapStateToProps = ({ posts, currentPost, comments, categories, meta }) => {
   return {
     posts,
+    currentPost,
     comments,
     categories,
     meta
@@ -66,7 +73,9 @@ const mapStateToProps = ({ posts, comments, categories, meta }) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  onGetPosts: (sort, dir) => dispatch(getPosts(sort, dir))
+  onGetPosts: (sort, dir) => dispatch(getPosts(sort, dir)),
+  onVote: (id, option) => dispatch(vote(id, option)),
+  onGetPost: (id) => dispatch(getPost(id))
 })
 
 // FIXME: See https://github.com/reactjs/react-redux/blob/master/docs/troubleshooting.md#my-views-arent-updating-when-something-changes-outside-of-redux
