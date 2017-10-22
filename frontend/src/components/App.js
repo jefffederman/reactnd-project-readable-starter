@@ -7,7 +7,7 @@ import queryString from 'query-string';
 import PostsList from './PostsList';
 import PostForm from './PostForm';
 import Post from './Post';
-import { getPosts, vote, getPost } from '../actions';
+import { getPosts, vote, getPost, deletePost } from '../actions';
 
 class App extends Component {
   state = {
@@ -25,35 +25,45 @@ class App extends Component {
   }
 
   render() {
+    const {
+      onVote,
+      onGetPost,
+      currentPost,
+      onDeletePost,
+      posts,
+      comments,
+      meta
+    } = this.props;
     return (
       <div className="container content">
         <div className="columns">
-          <Route path="/posts/new" render={() => (
-            <PostForm />
-          )}>
-          </Route>
           <Route path="/posts/:id/edit" render={({ match }) => (
             <PostForm
               postId={match.params.id}
             />
           )}>
           </Route>
-          <Route exact path="/posts/:id" render={({ match }) => (
+          <Route exact path="/posts/new" render={() => (
+            <PostForm />
+          )}>
+          </Route>
+          <Route path="/posts/:id([a-f1-9-]+)" render={({ match }) => (
             <Post
               id={match.params.id}
-              onVote={this.props.onVote}
-              onGetPost={this.props.onGetPost}
-              currentPost={this.props.currentPost}
+              onVote={onVote}
+              onGetPost={onGetPost}
+              currentPost={currentPost}
+              onDeletePost={onDeletePost}
             />
           )}>
           </Route>
           <Route exact path="/" render={({ location }) => (
             <PostsList
-              posts={this.props.posts}
-              comments={this.props.comments}
+              posts={posts}
+              comments={comments}
               search={location.search}
-              meta={this.props.meta}
-              onVote={this.props.onVote}
+              meta={meta}
+              onVote={onVote}
             />
           )} />
         </div>
@@ -75,7 +85,8 @@ const mapStateToProps = ({ posts, currentPost, comments, categories, meta }) => 
 const mapDispatchToProps = (dispatch) => ({
   onGetPosts: (sort, dir) => dispatch(getPosts(sort, dir)),
   onVote: (id, option) => dispatch(vote(id, option)),
-  onGetPost: (id) => dispatch(getPost(id))
+  onGetPost: (id) => dispatch(getPost(id)),
+  onDeletePost: (id) => dispatch(deletePost(id))
 })
 
 // FIXME: See https://github.com/reactjs/react-redux/blob/master/docs/troubleshooting.md#my-views-arent-updating-when-something-changes-outside-of-redux

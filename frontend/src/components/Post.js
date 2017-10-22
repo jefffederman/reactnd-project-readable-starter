@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Voter from './Voter';
+import DeleteButton from './DeleteButton';
 
 export default class Post extends Component {
   componentDidMount() {
@@ -30,7 +31,7 @@ export default class Post extends Component {
     const { currentPost } = this.props;
     if (currentPost) {
       const { title, author, body, voteScore } = currentPost;
-      const { onVote, id } = this.props;
+      const { onVote, id, onDeletePost } = this.props;
       const comments = [];
       return (
         <div className="column">
@@ -47,6 +48,9 @@ export default class Post extends Component {
           <div>
             <Voter onVote={onVote} id={id} direction="up" />
             <Voter onVote={onVote} id={id} direction="down" />
+          </div>
+          <div>
+            <DeleteButton onDelete={onDeletePost} id={id} />
           </div>
         </div>
       );

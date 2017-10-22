@@ -1,7 +1,5 @@
 export const GET_POSTS = 'GET_POSTS'
-export const CREATE_POST = 'CREATE_POST'
 export const GET_POST = 'GET_POST'
-export const EDIT_POST = 'EDIT_POST'
 export const DELETE_POST = 'DELETE_POST'
 export const GET_COMMENTS = 'GET_COMMENTS'
 export const GET_CATEGORIES = 'GET_CATEGORIES'

@@ -1,9 +1,7 @@
 import { combineReducers } from 'redux';
 import {
   GET_POSTS,
-  CREATE_POST,
   GET_POST,
-  EDIT_POST,
   DELETE_POST,
   GET_COMMENTS,
   GET_CATEGORIES,
