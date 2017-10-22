@@ -7,6 +7,7 @@ import queryString from 'query-string';
 import PostsList from './PostsList';
 import PostForm from './PostForm';
 import Post from './Post';
+import DestroyPost from './DestroyPost';
 import { getPosts, vote, getPost, deletePost } from '../actions';
 
 class App extends Component {
@@ -50,12 +51,18 @@ class App extends Component {
                 onGetPosts={onGetPosts}
               />
             )} />
+            <Route path="/posts/:id/destroy" render={({ match }) => (
+              <DestroyPost
+                postId={match.params.id}
+                onGetPosts={onGetPosts}
+                onDeletePost={onDeletePost}
+              />
+            )} />
             <Route path="/posts/:id" render={({ match }) => (
               <Post
                 id={match.params.id}
                 onVote={onVote}
                 onGetPost={onGetPost}
-                onDeletePost={onDeletePost}
                 currentPost={currentPost}
               />
             )} />

@@ -21,7 +21,7 @@ export default class PostItem extends Component {
 
   render() {
     const { title, author, voteScore, id, timestamp, category } = this.props.post;
-    const { commentCount, onVote, onDeletePost } = this.props;
+    const { commentCount, onVote } = this.props;
     return (
       <tr>
         <td><Link to={`/posts/${id}`}>{title}</Link></td>
@@ -44,7 +44,7 @@ export default class PostItem extends Component {
           </button>
         </td>
         <td>
-          <DeleteButton onDelete={onDeletePost} id={id} />
+          <DeleteButton id={id} />
         </td>
       </tr>
     )

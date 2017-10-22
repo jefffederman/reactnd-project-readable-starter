@@ -5,9 +5,8 @@ import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
 import queryString from 'query-string';
 import PostItem from './PostItem';
-import { deletePost } from '../actions';
 
-class PostsList extends Component {
+export default class PostsList extends Component {
   commentCount(post) {
     const { comments } = this.props;
     return comments.filter((comment) => {
@@ -16,7 +15,7 @@ class PostsList extends Component {
   }
 
   render() {
-    const { posts, onDeletePost, onVote } = this.props;
+    const { posts, onVote } = this.props;
     const { dir } = this.props.meta;
     return (
       <div className="column">
@@ -61,7 +60,6 @@ class PostsList extends Component {
                   post={post}
                   key={post.id}
                   commentCount={this.commentCount(post)}
-                  onDeletePost={onDeletePost}
                   onVote={onVote}
                 />
               )
@@ -72,9 +70,3 @@ class PostsList extends Component {
     )
   }
 }
-
-const mapDispatchToProps = (dispatch) => ({
-  onDeletePost: (id) => dispatch(deletePost(id))
-})
-
-export default connect(null, mapDispatchToProps)(PostsList);

@@ -31,7 +31,7 @@ export default class Post extends Component {
     const { currentPost } = this.props;
     if (currentPost) {
       const { title, author, body, voteScore } = currentPost;
-      const { onVote, id, onDeletePost } = this.props;
+      const { onVote, id } = this.props;
       const comments = [];
       return (
         <div className="column">
@@ -50,7 +50,7 @@ export default class Post extends Component {
             <Voter onVote={onVote} id={id} direction="down" />
           </div>
           <div>
-            <DeleteButton onDelete={onDeletePost} id={id} />
+            <DeleteButton id={id} />
           </div>
         </div>
       );
