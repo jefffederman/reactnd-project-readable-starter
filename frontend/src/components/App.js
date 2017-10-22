@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
 import queryString from 'query-string';
@@ -26,6 +26,7 @@ class App extends Component {
 
   render() {
     const {
+      onGetPosts,
       onVote,
       onGetPost,
       currentPost,
@@ -37,35 +38,37 @@ class App extends Component {
     return (
       <div className="container content">
         <div className="columns">
-          <Route path="/posts/:id/edit" render={({ match }) => (
-            <PostForm
-              postId={match.params.id}
-            />
-          )}>
-          </Route>
-          <Route exact path="/posts/new" render={() => (
-            <PostForm />
-          )}>
-          </Route>
-          <Route path="/posts/:id([a-f1-9-]+)" render={({ match }) => (
-            <Post
-              id={match.params.id}
-              onVote={onVote}
-              onGetPost={onGetPost}
-              currentPost={currentPost}
-              onDeletePost={onDeletePost}
-            />
-          )}>
-          </Route>
-          <Route exact path="/" render={({ location }) => (
-            <PostsList
-              posts={posts}
-              comments={comments}
-              search={location.search}
-              meta={meta}
-              onVote={onVote}
-            />
-          )} />
+          <Switch>
+            <Route exact path="/posts/new" render={() => (
+              <PostForm
+                onGetPosts={onGetPosts}
+              />
+            )} />
+            <Route path="/posts/:id/edit" render={({ match }) => (
+              <PostForm
+                postId={match.params.id}
+                onGetPosts={onGetPosts}
+              />
+            )} />
+            <Route path="/posts/:id" render={({ match }) => (
+              <Post
+                id={match.params.id}
+                onVote={onVote}
+                onGetPost={onGetPost}
+                onDeletePost={onDeletePost}
+                currentPost={currentPost}
+              />
+            )} />
+            <Route exact path="/" render={({ location }) => (
+              <PostsList
+                posts={posts}
+                comments={comments}
+                search={location.search}
+                meta={meta}
+                onVote={onVote}
+              />
+            )} />
+          </Switch>
         </div>
       </div>
     );

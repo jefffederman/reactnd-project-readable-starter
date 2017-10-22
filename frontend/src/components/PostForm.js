@@ -58,7 +58,9 @@ export default class PostForm extends Component {
   handleSubmit(e) {
     e.preventDefault()
     const { url, options } = this.actionData(e);
+    const { onGetPosts } = this.props;
     fetch(url, options)
+    .then(() => onGetPosts())
     .then(() => this.setState({ redirect: true }))
   }
 
