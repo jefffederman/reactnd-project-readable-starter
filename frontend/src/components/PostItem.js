@@ -5,6 +5,7 @@ import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
 import Voter from './Voter';
 import DeleteButton from './DeleteButton';
+import EditButton from './EditButton';
 
 export default class PostItem extends Component {
   formatTimestamp(timestamp) {
@@ -37,11 +38,7 @@ export default class PostItem extends Component {
           <Voter onVote={onVote} id={id} direction="down" />
         </td>
         <td>
-          <button className="button">
-            <Link to={`/posts/${id}/edit`}>
-              <i className="fa fa-pencil"></i>
-            </Link>
-          </button>
+          <EditButton id={id} />
         </td>
         <td>
           <DeleteButton id={id} />

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Voter from './Voter';
 import DeleteButton from './DeleteButton';
+import EditButton from './EditButton';
 
 export default class Post extends Component {
   componentDidMount() {
@@ -45,12 +46,19 @@ export default class Post extends Component {
             <dt>Vote score</dt>
             <dd>{ voteScore }</dd>
           </dl>
-          <div>
-            <Voter onVote={onVote} id={id} direction="up" />
-            <Voter onVote={onVote} id={id} direction="down" />
-          </div>
-          <div>
-            <DeleteButton id={id} />
+          <div className="field is-grouped">
+            <p className="control">
+              <Voter onVote={onVote} id={id} direction="up" />
+            </p>
+            <p className="control">
+              <Voter onVote={onVote} id={id} direction="down" />
+            </p>
+            <p className="control">
+              <EditButton id={id} />
+            </p>
+            <p className="control">
+              <DeleteButton id={id} />
+            </p>
           </div>
         </div>
       );
