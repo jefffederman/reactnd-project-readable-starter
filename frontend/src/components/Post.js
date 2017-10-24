@@ -4,7 +4,7 @@ import DeleteButton from './DeleteButton';
 import EditButton from './EditButton';
 
 export default function Post({ post, onVote, resource }) {
-  const { title, author, voteScore, body, id } = post;
+  const { title, author, voteScore, body, id, parentId } = post;
   return (
     <article className="media">
       <div className="media-content">
@@ -26,7 +26,7 @@ export default function Post({ post, onVote, resource }) {
               <EditButton id={id} />
             </p>
             <p className="control">
-              <DeleteButton id={id} />
+              <DeleteButton id={id} resource={resource} parentId={parentId} />
             </p>
           </div>
         </div>

@@ -3,6 +3,7 @@ import {
   GET_POSTS,
   GET_POST,
   DELETE_POST,
+  DELETE_COMMENT,
   GET_COMMENTS,
   GET_CATEGORIES,
   VOTE
@@ -74,6 +75,14 @@ function comments(comments = [], action) {
       })
     }
     return comments;
+
+  case DELETE_COMMENT:
+    return comments.map((comment) => {
+      if (comment.id === action.id) {
+        comment.deleted = true
+      }
+      return comment
+    })
 
   default:
     return comments;

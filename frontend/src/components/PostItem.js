@@ -41,7 +41,7 @@ export default class PostItem extends Component {
           <EditButton id={id} />
         </td>
         <td>
-          <DeleteButton id={id} />
+          <DeleteButton id={id} resource="posts" />
         </td>
       </tr>
     )

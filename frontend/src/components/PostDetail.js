@@ -5,7 +5,7 @@ export default class PostDetail extends Component {
   comments(postId) {
     const { comments } = this.props;
     return comments.filter((comment) => {
-      return comment.parentId === postId
+      return comment.parentId === postId && !comment.deleted
     })
   }
 
@@ -17,9 +17,7 @@ export default class PostDetail extends Component {
   render() {
     const { currentPost } = this.props;
     if (currentPost) {
-      const { title, author, body, voteScore } = currentPost;
       const { onVote, id } = this.props;
-      const comments = [];
       return (
         <div className="columns">
           <div className="column">
@@ -28,7 +26,12 @@ export default class PostDetail extends Component {
             <h4>{this.comments(id).length} Comments</h4>
             {this.comments(id).map((comment) => {
               return (
-                <Post post={comment} onVote={onVote} resource="comments" />
+                <Post
+                  post={comment}
+                  onVote={onVote}
+                  resource="comments"
+                  key={comment.id}
+                />
               )
             })}
           </div>

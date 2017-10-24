@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
 import queryString from 'query-string';
 import PostsList from './PostsList';
 import PostForm from './PostForm';
 import PostDetail from './PostDetail';
-import DestroyPost from './DestroyPost';
-import { getPosts, vote, getPost, deletePost } from '../actions';
+import DestroyResource from './DestroyResource';
+import { getPosts, vote, getPost, deleteResource, getComments } from '../actions';
 
 class App extends Component {
   state = {
@@ -20,9 +20,10 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const { onGetPosts, search } = this.props;
+    const { onGetPosts, search, onGetComments } = this.props;
     const { sort, dir } = queryString.parse(search);
     onGetPosts(sort, dir)
+    .then(({ posts }) => posts.forEach((post) => onGetComments(post.id)))
   }
 
   render() {
@@ -31,7 +32,7 @@ class App extends Component {
       onVote,
       onGetPost,
       currentPost,
-      onDeletePost,
+      onDeleteResource,
       posts,
       comments,
       meta
@@ -50,13 +51,18 @@ class App extends Component {
               onGetPosts={onGetPosts}
             />
           )} />
-          <Route path="/posts/:id/destroy" render={({ match }) => (
-            <DestroyPost
-              postId={match.params.id}
-              onGetPosts={onGetPosts}
-              onDeletePost={onDeletePost}
-            />
-          )} />
+          <Route path="/:resource/:id/destroy" render={({ match, location }) => {
+            const { parentId } = queryString.parse(location.search);
+            return (
+              <DestroyResource
+                resourceId={match.params.id}
+                onGetPosts={onGetPosts}
+                onDeleteResource={onDeleteResource}
+                resource={match.params.resource}
+                parentId={parentId}
+              />
+            )
+          }} />
           <Route path="/posts/:id" render={({ match }) => (
             <PostDetail
               id={match.params.id}
@@ -66,7 +72,7 @@ class App extends Component {
               comments={comments}
             />
           )} />
-          <Route exact path="/" render={({ location }) => (
+          <Route exact path="/posts" render={({ location }) => (
             <PostsList
               posts={posts}
               comments={comments}
@@ -75,6 +81,9 @@ class App extends Component {
               onVote={onVote}
               redirect={location.path}
             />
+          )} />
+          <Route exact path="/" render={() => (
+            <Redirect to="/posts" />
           )} />
         </Switch>
       </div>
@@ -96,7 +105,8 @@ const mapDispatchToProps = (dispatch) => ({
   onGetPosts: (sort, dir) => dispatch(getPosts(sort, dir)),
   onVote: (id, option, type) => dispatch(vote(id, option, type)),
   onGetPost: (id) => dispatch(getPost(id)),
-  onDeletePost: (id) => dispatch(deletePost(id))
+  onDeleteResource: (id, resource) => dispatch(deleteResource(id, resource)),
+  onGetComments: (id) => dispatch(getComments(id))
 })
 
 // FIXME: See https://github.com/reactjs/react-redux/blob/master/docs/troubleshooting.md#my-views-arent-updating-when-something-changes-outside-of-redux

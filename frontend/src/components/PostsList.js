@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
 import queryString from 'query-string';
@@ -10,7 +9,7 @@ export default class PostsList extends Component {
   commentCount(post) {
     const { comments } = this.props;
     return comments.filter((comment) => {
-      return comment.parentId === post.id
+      return comment.parentId === post.id && !comment.deleted
     }).length
   }
 

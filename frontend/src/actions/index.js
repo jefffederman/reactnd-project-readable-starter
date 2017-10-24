@@ -1,6 +1,7 @@
 export const GET_POSTS = 'GET_POSTS'
 export const GET_POST = 'GET_POST'
 export const DELETE_POST = 'DELETE_POST'
+export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const GET_COMMENTS = 'GET_COMMENTS'
 export const GET_CATEGORIES = 'GET_CATEGORIES'
 export const VOTE = 'VOTE'
@@ -21,8 +22,7 @@ export function getPosts(sort, dir) {
   }
 
   return (dispatch) => {
-    // get posts
-    fetch(`${baseURL}/posts`, {
+    return fetch(`${baseURL}/posts`, {
       method: 'GET',
       headers
     })
@@ -33,20 +33,20 @@ export function getPosts(sort, dir) {
       sort,
       dir
     }))
-    // get comments
-    .then(({ posts }) => {
-      posts.forEach((post) => {
-        fetch(`${baseURL}/posts/${post.id}/comments`, {
-          method: 'GET',
-          headers
-        })
-        .then((res) => res.json())
-        .then((comments) => dispatch({
-          type: GET_COMMENTS,
-          comments
-        }))
-      })
-    });
+  }
+}
+
+export function getComments(postId) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/posts/${postId}/comments`, {
+      method: 'GET',
+      headers
+    })
+    .then((res) => res.json())
+    .then((comments) => dispatch({
+      type: GET_COMMENTS,
+      comments
+    }))
   }
 }
 
@@ -81,17 +81,27 @@ export function getPost(id) {
   }
 }
 
-export function deletePost(id) {
+export function deleteResource(id, resource) {
   return (dispatch) => {
-    return fetch(`${baseURL}/posts/${id}`, {
+    return fetch(`${baseURL}/${resource}/${id}`, {
       method: 'DELETE',
       headers
     })
     .then((res) => res.json())
-    .then(() => dispatch({
-      type: DELETE_POST,
-      id
-    }))
+    .then(() => {
+      if (resource === 'posts') {
+        dispatch({
+          type: DELETE_POST,
+          id
+        })
+      } else {
+        dispatch({
+          type: DELETE_COMMENT,
+          id
+        })
+      }
+    })
     .then(() => getPosts()(dispatch))
+    .then(() => getComments(id)(dispatch))
   }
 }
