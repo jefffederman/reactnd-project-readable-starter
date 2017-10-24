@@ -50,17 +50,19 @@ export function getPosts(sort, dir) {
   }
 }
 
-export function vote(id, option) {
+// type is either 'posts' or 'comments'
+export function vote(id, option, type = 'posts') {
   return (dispatch) => {
-    return fetch(`${baseURL}/posts/${id}`, {
+    return fetch(`${baseURL}/${type}/${id}`, {
       method: 'POST',
       headers,
       body: JSON.stringify({ option })
     })
     .then((res) => res.json())
-    .then((post) => dispatch({
+    .then((resource) => dispatch({
       type: VOTE,
-      post
+      resourceType: type,
+      resource: resource
     }))
   }
 }

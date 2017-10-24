@@ -28,12 +28,15 @@ function posts(posts = [], action) {
     })
 
   case VOTE:
-    return posts.map((post) => {
-      if (post.id === action.post.id) {
-        return action.post;
-      }
-      return post;
-    })
+    if (action.resourceType === 'posts') {
+      return posts.map((post) => {
+        if (post.id === action.resource.id) {
+          return action.resource;
+        }
+        return post;
+      })
+    }
+    return posts;
 
   default:
     return posts;
@@ -46,7 +49,10 @@ function currentPost(currentPost = null, action) {
     return action.currentPost;
 
   case VOTE:
-    return action.post;
+    if (action.resourceType === 'posts') {
+      return action.resource;
+    }
+    return currentPost;
 
   default:
     return currentPost;
@@ -57,6 +63,17 @@ function comments(comments = [], action) {
   switch (action.type) {
   case GET_COMMENTS:
     return comments.concat(action.comments);
+
+  case VOTE:
+    if (action.resourceType === 'comments') {
+      return comments.map((comment) => {
+        if (comment.id === action.resource.id) {
+          return action.resource;
+        }
+        return comment;
+      })
+    }
+    return comments;
 
   default:
     return comments;

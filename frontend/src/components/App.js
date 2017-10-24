@@ -6,7 +6,7 @@ import 'bulma/css/bulma.css';
 import queryString from 'query-string';
 import PostsList from './PostsList';
 import PostForm from './PostForm';
-import Post from './Post';
+import PostDetail from './PostDetail';
 import DestroyPost from './DestroyPost';
 import { getPosts, vote, getPost, deletePost } from '../actions';
 
@@ -38,45 +38,45 @@ class App extends Component {
     } = this.props;
     return (
       <div className="container content">
-        <div className="columns">
-          <Switch>
-            <Route exact path="/posts/new" render={() => (
-              <PostForm
-                onGetPosts={onGetPosts}
-              />
-            )} />
-            <Route path="/posts/:id/edit" render={({ match }) => (
-              <PostForm
-                postId={match.params.id}
-                onGetPosts={onGetPosts}
-              />
-            )} />
-            <Route path="/posts/:id/destroy" render={({ match }) => (
-              <DestroyPost
-                postId={match.params.id}
-                onGetPosts={onGetPosts}
-                onDeletePost={onDeletePost}
-              />
-            )} />
-            <Route path="/posts/:id" render={({ match }) => (
-              <Post
-                id={match.params.id}
-                onVote={onVote}
-                onGetPost={onGetPost}
-                currentPost={currentPost}
-              />
-            )} />
-            <Route exact path="/" render={({ location }) => (
-              <PostsList
-                posts={posts}
-                comments={comments}
-                search={location.search}
-                meta={meta}
-                onVote={onVote}
-              />
-            )} />
-          </Switch>
-        </div>
+        <Switch>
+          <Route exact path="/posts/new" render={() => (
+            <PostForm
+              onGetPosts={onGetPosts}
+            />
+          )} />
+          <Route path="/posts/:id/edit" render={({ match }) => (
+            <PostForm
+              postId={match.params.id}
+              onGetPosts={onGetPosts}
+            />
+          )} />
+          <Route path="/posts/:id/destroy" render={({ match }) => (
+            <DestroyPost
+              postId={match.params.id}
+              onGetPosts={onGetPosts}
+              onDeletePost={onDeletePost}
+            />
+          )} />
+          <Route path="/posts/:id" render={({ match }) => (
+            <PostDetail
+              id={match.params.id}
+              onVote={onVote}
+              onGetPost={onGetPost}
+              currentPost={currentPost}
+              comments={comments}
+            />
+          )} />
+          <Route exact path="/" render={({ location }) => (
+            <PostsList
+              posts={posts}
+              comments={comments}
+              search={location.search}
+              meta={meta}
+              onVote={onVote}
+              redirect={location.path}
+            />
+          )} />
+        </Switch>
       </div>
     );
   }
@@ -94,7 +94,7 @@ const mapStateToProps = ({ posts, currentPost, comments, categories, meta }) => 
 
 const mapDispatchToProps = (dispatch) => ({
   onGetPosts: (sort, dir) => dispatch(getPosts(sort, dir)),
-  onVote: (id, option) => dispatch(vote(id, option)),
+  onVote: (id, option, type) => dispatch(vote(id, option, type)),
   onGetPost: (id) => dispatch(getPost(id)),
   onDeletePost: (id) => dispatch(deletePost(id))
 })

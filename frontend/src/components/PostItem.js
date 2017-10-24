@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
-import Voter from './Voter';
+import VoterButton from './VoterButton';
 import DeleteButton from './DeleteButton';
 import EditButton from './EditButton';
 
@@ -32,10 +32,10 @@ export default class PostItem extends Component {
         <td>{voteScore}</td>
         <td>{category}</td>
         <td>
-          <Voter onVote={onVote} id={id} direction="up" />
+          <VoterButton id={id} direction="up" onVote={onVote} />
         </td>
         <td>
-          <Voter onVote={onVote} id={id} direction="down" />
+          <VoterButton id={id} direction="down" onVote={onVote} />
         </td>
         <td>
           <EditButton id={id} />

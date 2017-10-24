@@ -1,57 +1,26 @@
-import React, { Component } from 'react';
-import Voter from './Voter';
+import React from 'react';
+import VoterButton from './VoterButton';
 import DeleteButton from './DeleteButton';
 import EditButton from './EditButton';
 
-export default class Post extends Component {
-  componentDidMount() {
-    const { id, onGetPost } = this.props;
-    onGetPost(id)
-    // const baseURL = 'http://localhost:3001';
-    // const headers = {
-    //   'Authorization': 'totesauthd',
-    //   'Content-Type': 'application/json'
-    // };
-    // fetch(`${baseURL}/posts/${id}`, {
-    //   method: 'GET',
-    //   headers
-    // })
-    // .then((res) => res.json())
-    // .then((post) => {
-    //   this.setState({ post });
-    //   fetch(`${baseURL}/posts/${post.id}/comments`, {
-    //     method: 'GET',
-    //     headers
-    //   })
-    //   .then((res) => res.json())
-    //   .then((comments) => this.setState({ comments }))
-    // })
-  }
-
-  render() {
-    const { currentPost } = this.props;
-    if (currentPost) {
-      const { title, author, body, voteScore } = currentPost;
-      const { onVote, id } = this.props;
-      const comments = [];
-      return (
-        <div className="column">
+export default function Post({ post, onVote, resource }) {
+  const { title, author, voteScore, body, id } = post;
+  return (
+    <article className="media">
+      <div className="media-content">
+        <div className="content">
           <h2>{title}</h2>
-          <h3>{author}</h3>
-          <dl>
-            <dt>Body</dt>
-            <dd>{body}</dd>
-            <dt>Comment count</dt>
-            <dd>{comments.length}</dd>
-            <dt>Vote score</dt>
-            <dd>{ voteScore }</dd>
-          </dl>
+          <p>
+            <strong>{ author }</strong> <small>({ voteScore })</small>
+            <br />
+            { body }
+          </p>
           <div className="field is-grouped">
             <p className="control">
-              <Voter onVote={onVote} id={id} direction="up" />
+              <VoterButton id={id} direction="up" onVote={onVote} resource={resource} />
             </p>
             <p className="control">
-              <Voter onVote={onVote} id={id} direction="down" />
+              <VoterButton id={id} direction="down" onVote={onVote} resource={resource} />
             </p>
             <p className="control">
               <EditButton id={id} />
@@ -61,8 +30,7 @@ export default class Post extends Component {
             </p>
           </div>
         </div>
-      );
-    }
-    return null;
-  }
+      </div>
+    </article>
+  );
 }
