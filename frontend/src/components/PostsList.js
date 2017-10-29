@@ -21,9 +21,26 @@ export default class PostsList extends Component {
     return posts;
   }
 
+  dir(attribute) {
+    const { sort, dir } = queryString.parse(this.props.search);
+    if (sort === attribute) {
+      const newDir = dir === 'asc' ? 'desc' : 'asc';
+      return newDir;
+    }
+    return 'desc';
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { search, onGetPosts } = nextProps;
+    const oldSearch = this.props.search;
+    if (search !== oldSearch) {
+      const { sort, dir } = queryString.parse(search);
+      onGetPosts(sort, dir);
+    }
+  }
+
   render() {
     const { onVote, categories } = this.props;
-    const { dir } = this.props.meta;
     return (
       <div className="column">
         <div className="columns">
@@ -45,25 +62,29 @@ export default class PostsList extends Component {
                   <th>Title</th>
                   <th>Author</th>
                   <th>
-                    <Link to={{
-                      pathname: '/',
-                      search: queryString.stringify({
-                        sort: 'timestamp',
-                        dir
-                      })
-                    }}>
+                    <Link
+                      to={{
+                        search: queryString.stringify({
+                          sort: 'timestamp',
+                          dir: this.dir('timestamp')
+                        })
+                      }}
+                      replace
+                    >
                       Created at
                     </Link>
                   </th>
                   <th>Comment count</th>
                   <th>
-                    <Link to={{
-                      pathname: '/',
-                      search: queryString.stringify({
-                        sort: 'voteScore',
-                        dir
-                      })
-                    }}>
+                    <Link
+                      to={{
+                        search: queryString.stringify({
+                          sort: 'voteScore',
+                          dir: this.dir('voteScore')
+                        })
+                      }}
+                      replace
+                    >
                       Current score
                     </Link>
                   </th>

@@ -105,8 +105,8 @@ class App extends Component {
               search={location.search}
               meta={meta}
               onVote={onVote}
-              redirect={location.path}
               categories={categories}
+              onGetPosts={onGetPosts}
             />
           )} />
           <Route exact path="/:category" render={({ location, match }) => (
@@ -116,9 +116,9 @@ class App extends Component {
               search={location.search}
               meta={meta}
               onVote={onVote}
-              redirect={location.path}
               categories={categories}
               category={match.params.category}
+              onGetPosts={onGetPosts}
             />
           )} />
           <Route exact path="/" render={() => (
