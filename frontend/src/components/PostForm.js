@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
 import uuidv4 from 'uuid/v4';
@@ -160,4 +161,12 @@ export default class PostForm extends Component {
       </div>
     )
   }
+}
+
+PostForm.propTypes = {
+  postId: PropTypes.string.isRequired,
+  onGetPosts: PropTypes.func.isRequired,
+  categories: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired
+  }))
 }

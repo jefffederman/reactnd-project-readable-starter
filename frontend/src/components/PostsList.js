@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
 import queryString from 'query-string';
@@ -114,10 +115,45 @@ export default class PostsList extends Component {
                 }) }
               </tbody>
             </table>
-
           </div>
         </div>
       </div>
     )
   }
+}
+
+PostsList.propTypes = {
+  posts: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string,
+      author: PropTypes.string,
+      voteScore: PropTypes.number.isRequired,
+      body: PropTypes.string,
+      id: PropTypes.string.isRequired,
+      parentId: PropTypes.string
+    })
+  ),
+  comments: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      parentId: PropTypes.string,
+      author: PropTypes.string,
+      body: PropTypes.string,
+      timestamp: PropTypes.string.isRequired,
+      deleted: PropTypes.bool.isRequired
+    })
+  ),
+  search: PropTypes.string,
+  meta: PropTypes.shape({
+    sort: PropTypes.string.isRequired,
+    dir: PropTypes.string.isRequired
+  }),
+  onVote: PropTypes.func.isRequired,
+  categories: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired
+    })
+  ),
+  category: PropTypes.string,
+  onGetPosts: PropTypes.func.isRequired
 }

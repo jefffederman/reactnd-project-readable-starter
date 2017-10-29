@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 export default class DestroyResource extends Component {
   componentDidMount() {
@@ -20,4 +21,11 @@ export default class DestroyResource extends Component {
       <Redirect to={href} />
     )
   }
+}
+
+DestroyResource.propTypes = {
+  resourceId: PropTypes.string.isRequired,
+  resourceType: PropTypes.string.isRequired,
+  onDeleteResource: PropTypes.func.isRequired,
+  parentId: PropTypes.string,
 }

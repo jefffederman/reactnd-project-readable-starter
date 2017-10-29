@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
 import uuidv4 from 'uuid/v4';
@@ -133,4 +134,10 @@ export default class CommentForm extends Component {
       </div>
     )
   }
+}
+
+CommentForm.propTypes = {
+  id: PropTypes.string,
+  parentId: PropTypes.string.isRequired,
+  onGetComments: PropTypes.func.isRequired
 }

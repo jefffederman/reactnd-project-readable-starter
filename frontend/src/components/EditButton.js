@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 // direction must be either 'up' or 'down'
 export default function EditButton({ parentResourceType, resourceType, id, parentId }) {
@@ -16,4 +17,11 @@ export default function EditButton({ parentResourceType, resourceType, id, paren
       <i className="fa fa-pencil"></i>
     </Link>
   );
+}
+
+EditButton.propTypes = {
+  resourceType: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  parentResourceType: PropTypes.string,
+  parentId: PropTypes.string
 }

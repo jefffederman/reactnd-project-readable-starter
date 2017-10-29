@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Post from './Post';
 
 export default class PostDetail extends Component {
@@ -61,3 +62,28 @@ export default class PostDetail extends Component {
     return null;
   }
 }
+
+PostDetail.propTypes = {
+  id: PropTypes.string.isRequired,
+  onVote: PropTypes.func.isRequired,
+  onGetPost: PropTypes.func.isRequired,
+  currentPost: PropTypes.shape({
+    title: PropTypes.string,
+    author: PropTypes.string,
+    voteScore: PropTypes.number.isRequired,
+    body: PropTypes.string,
+    id: PropTypes.string.isRequired,
+    parentId: PropTypes.string,
+    deleted: PropTypes.bool.isRequired
+  }).isRequired,
+  comments: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      parentId: PropTypes.string,
+      author: PropTypes.string,
+      body: PropTypes.string,
+      timestamp: PropTypes.string.isRequired,
+      deleted: PropTypes.bool.isRequired
+    })
+  )
+};

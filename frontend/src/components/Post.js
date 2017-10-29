@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import VoterButton from './VoterButton';
 import DeleteButton from './DeleteButton';
 import EditButton from './EditButton';
@@ -53,4 +54,18 @@ export default function Post({ post, onVote, resourceType, parentResourceType })
       </div>
     </article>
   );
+}
+
+Post.propTypes = {
+  post: PropTypes.shape({
+    title: PropTypes.string,
+    author: PropTypes.string,
+    voteScore: PropTypes.number.isRequired,
+    body: PropTypes.string,
+    id: PropTypes.string.isRequired,
+    parentId: PropTypes.string
+  }),
+  onVote: PropTypes.func.isRequired,
+  resourceType: PropTypes.string.isRequired,
+  parentResourceType: PropTypes.string
 }
