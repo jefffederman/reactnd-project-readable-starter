@@ -12,7 +12,7 @@ export default class PostForm extends Component {
       title: '',
       author: '',
       body: '',
-      category: '',
+      category: 'react',
       timestamp: Date.now(),
       deleted: false
     },
