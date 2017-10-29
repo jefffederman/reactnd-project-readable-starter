@@ -4,6 +4,7 @@ import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
 import queryString from 'query-string';
 import PostItem from './PostItem';
+import { titleFromCamel } from '../utils';
 
 export default class PostsList extends Component {
   commentCount(post) {
@@ -39,6 +40,14 @@ export default class PostsList extends Component {
     }
   }
 
+  heading() {
+    const { category } = this.props;
+    if (category) {
+      return `${titleFromCamel(category)} Posts`;
+    }
+    return 'Posts';
+  }
+
   render() {
     const { onVote, categories } = this.props;
     return (
@@ -54,7 +63,7 @@ export default class PostsList extends Component {
             </ul>
           </div>
           <div className="column is-three-quarters">
-            <h1>Posts</h1>
+            <h1>{this.heading()}</h1>
             <Link to="/posts/new" className="button is-primary">New Post</Link>
             <table className="table">
               <thead>
