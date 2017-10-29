@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
 import uuidv4 from 'uuid/v4';
@@ -97,6 +97,7 @@ export default class PostForm extends Component {
 
     return (
       <div className="column is-half">
+        <Link to="/posts" className="is-pulled-right">Cancel</Link>
         <h1>{this.heading}</h1>
         <form onSubmit={(e) => this.handleSubmit(e)}>
           <div className="field">
