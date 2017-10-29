@@ -17,11 +17,26 @@ export default class PostDetail extends Component {
 
   render() {
     const { currentPost } = this.props;
-    if (currentPost) {
+    if (!currentPost || !Object.keys(currentPost).length) {
+      return (
+        <div className="columns">
+          <div className="column">
+            <Link to="/posts">
+              <i className="fa fa-arrow-left"></i>&nbsp;Back to Posts
+            </Link>
+            <p>That post does not exist.</p>
+          </div>
+        </div>
+      )
+    }
+    if (currentPost && Object.keys(currentPost).length) {
       const { onVote, id } = this.props;
       return (
         <div className="columns">
           <div className="column">
+            <Link to="/posts">
+              <i className="fa fa-arrow-left"></i>&nbsp;Back to Posts
+            </Link>
             <Post post={currentPost} onVote={onVote} resourceType="posts" />
             <hr />
             <h4>{this.comments(id).length} Comments</h4>

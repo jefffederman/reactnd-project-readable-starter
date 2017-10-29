@@ -127,14 +127,16 @@ export default class PostForm extends Component {
 
           <div className="field">
             <label className="label">Category</label>
-            <div className="control">
-              <input
-                className="input"
-                type="text"
+            <div className="select">
+              <select
                 name="category"
                 value={post.category}
                 onChange={(e) => this.handleChange(e)}
-              />
+              >
+                {this.props.categories.map((category) => (
+                  <option value={category.name}>{category.name}</option>
+                ))}
+              </select>
             </div>
           </div>
 

@@ -9,7 +9,14 @@ import PostForm from './PostForm';
 import PostDetail from './PostDetail';
 import DestroyResource from './DestroyResource';
 import CommentForm from './CommentForm';
-import { getPosts, vote, getPost, deleteResource, getComments } from '../actions';
+import {
+  getPosts,
+  vote,
+  getPost,
+  deleteResource,
+  getComments,
+  getCategories
+} from '../actions';
 
 class App extends Component {
   state = {
@@ -21,10 +28,11 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const { onGetPosts, search, onGetComments } = this.props;
+    const { onGetPosts, search, onGetComments, onGetCategories } = this.props;
     const { sort, dir } = queryString.parse(search);
     onGetPosts(sort, dir)
     .then(({ posts }) => posts.forEach((post) => onGetComments(post.id)))
+    onGetCategories();
   }
 
   render() {
@@ -37,6 +45,7 @@ class App extends Component {
       posts,
       comments,
       onGetComments,
+      categories,
       meta
     } = this.props;
     return (
@@ -45,12 +54,14 @@ class App extends Component {
           <Route exact path="/posts/new" render={() => (
             <PostForm
               onGetPosts={onGetPosts}
+              categories={categories}
             />
           )} />
           <Route path="/posts/:id/edit" render={({ match }) => (
             <PostForm
               postId={match.params.id}
               onGetPosts={onGetPosts}
+              categories={categories}
             />
           )} />
           <Route path="/posts/:postId/comments/new" render={({ match }) => (
@@ -95,6 +106,19 @@ class App extends Component {
               meta={meta}
               onVote={onVote}
               redirect={location.path}
+              categories={categories}
+            />
+          )} />
+          <Route exact path="/:category" render={({ location, match }) => (
+            <PostsList
+              posts={posts}
+              comments={comments}
+              search={location.search}
+              meta={meta}
+              onVote={onVote}
+              redirect={location.path}
+              categories={categories}
+              category={match.params.category}
             />
           )} />
           <Route exact path="/" render={() => (
@@ -121,7 +145,8 @@ const mapDispatchToProps = (dispatch) => ({
   onVote: (id, option, type) => dispatch(vote(id, option, type)),
   onGetPost: (id) => dispatch(getPost(id)),
   onDeleteResource: (id, resource) => dispatch(deleteResource(id, resource)),
-  onGetComments: (id) => dispatch(getComments(id))
+  onGetComments: (id) => dispatch(getComments(id)),
+  onGetCategories: () => dispatch(getCategories())
 })
 
 // FIXME: See https://github.com/reactjs/react-redux/blob/master/docs/troubleshooting.md#my-views-arent-updating-when-something-changes-outside-of-redux

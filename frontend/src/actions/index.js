@@ -105,3 +105,17 @@ export function deleteResource(id, resource) {
     .then(() => getComments(id)(dispatch))
   }
 }
+
+export function getCategories() {
+  return (dispatch) => {
+    return fetch(`${baseURL}/categories`, {
+      method: 'GET',
+      headers
+    })
+    .then((res) => res.json())
+    .then(({ categories }) => dispatch({
+      type: GET_CATEGORIES,
+      categories
+    }))
+  }
+}
