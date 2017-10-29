@@ -8,6 +8,7 @@ import PostsList from './PostsList';
 import PostForm from './PostForm';
 import PostDetail from './PostDetail';
 import DestroyResource from './DestroyResource';
+import CommentForm from './CommentForm';
 import { getPosts, vote, getPost, deleteResource, getComments } from '../actions';
 
 class App extends Component {
@@ -35,6 +36,7 @@ class App extends Component {
       onDeleteResource,
       posts,
       comments,
+      onGetComments,
       meta
     } = this.props;
     return (
@@ -51,6 +53,19 @@ class App extends Component {
               onGetPosts={onGetPosts}
             />
           )} />
+          <Route path="/posts/:postId/comments/new" render={({ match }) => (
+            <CommentForm
+              parentId={match.params.postId}
+              onGetComments={onGetComments}
+            />
+          )} />
+          <Route path="/posts/:postId/comments/:id/edit" render={({ match }) => (
+            <CommentForm
+              parentId={match.params.postId}
+              onGetComments={onGetComments}
+              id={match.params.id}
+            />
+          )} />
           <Route path="/:resource/:id/destroy" render={({ match, location }) => {
             const { parentId } = queryString.parse(location.search);
             return (
@@ -58,7 +73,7 @@ class App extends Component {
                 resourceId={match.params.id}
                 onGetPosts={onGetPosts}
                 onDeleteResource={onDeleteResource}
-                resource={match.params.resource}
+                resourceType={match.params.resource}
                 parentId={parentId}
               />
             )

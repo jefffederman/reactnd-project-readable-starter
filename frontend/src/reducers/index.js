@@ -63,7 +63,13 @@ function currentPost(currentPost = null, action) {
 function comments(comments = [], action) {
   switch (action.type) {
   case GET_COMMENTS:
-    return comments.concat(action.comments);
+    const actionCommentIds = action.comments.map((actionComment) => {
+      return actionComment.id;
+    });
+    const prevComments = comments.filter((comment) => {
+      return !actionCommentIds.includes(comment.id);
+    })
+    return prevComments.concat(action.comments);
 
   case VOTE:
     if (action.resourceType === 'comments') {

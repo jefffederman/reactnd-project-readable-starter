@@ -38,10 +38,10 @@ export default class PostItem extends Component {
           <VoterButton id={id} direction="down" onVote={onVote} />
         </td>
         <td>
-          <EditButton id={id} />
+          <EditButton id={id} resourceType="posts" />
         </td>
         <td>
-          <DeleteButton id={id} resource="posts" />
+          <DeleteButton id={id} resourceType="posts" />
         </td>
       </tr>
     )

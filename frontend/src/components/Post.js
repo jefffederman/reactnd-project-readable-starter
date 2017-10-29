@@ -3,8 +3,9 @@ import VoterButton from './VoterButton';
 import DeleteButton from './DeleteButton';
 import EditButton from './EditButton';
 
-export default function Post({ post, onVote, resource }) {
+export default function Post({ post, onVote, resourceType, parentResourceType }) {
   const { title, author, voteScore, body, id, parentId } = post;
+
   return (
     <article className="media">
       <div className="media-content">
@@ -17,16 +18,35 @@ export default function Post({ post, onVote, resource }) {
           </p>
           <div className="field is-grouped">
             <p className="control">
-              <VoterButton id={id} direction="up" onVote={onVote} resource={resource} />
+              <VoterButton
+                id={id}
+                direction="up"
+                onVote={onVote}
+                resourceType={resourceType}
+              />
             </p>
             <p className="control">
-              <VoterButton id={id} direction="down" onVote={onVote} resource={resource} />
+              <VoterButton
+                id={id}
+                direction="down"
+                onVote={onVote}
+                resourceType={resourceType}
+              />
             </p>
             <p className="control">
-              <EditButton id={id} />
+              <EditButton
+                id={id}
+                resourceType={resourceType}
+                parentId={parentId}
+                parentResourceType={parentResourceType}
+              />
             </p>
             <p className="control">
-              <DeleteButton id={id} resource={resource} parentId={parentId} />
+              <DeleteButton
+                id={id}
+                resourceType={resourceType}
+                parentId={parentId}
+              />
             </p>
           </div>
         </div>
