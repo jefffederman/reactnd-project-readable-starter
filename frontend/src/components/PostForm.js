@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
 import uuidv4 from 'uuid/v4';
+import { baseURL, headers } from '../apiConfig.js'
 
 export default class PostForm extends Component {
 
@@ -20,13 +21,6 @@ export default class PostForm extends Component {
     redirect: false
   }
 
-  baseURL = 'http://localhost:3001'
-
-  headers = {
-    'Authorization': 'totesauthd',
-    'Content-Type': 'application/json'
-  };
-
   get heading() {
     if (this.props.postId) return 'Edit Post';
     return 'New Post';
@@ -35,10 +29,10 @@ export default class PostForm extends Component {
   actionData(e) {
     const { postId } = this.props;
 
-    const url = `${this.baseURL}/posts`
+    const url = `${baseURL}/posts`
 
     let options = {
-      headers: this.headers,
+      headers,
       method: 'POST',
       body: JSON.stringify(this.state.post)
     };
@@ -80,9 +74,9 @@ export default class PostForm extends Component {
     const { postId } = this.props;
 
     if (postId) {
-      fetch(`${this.baseURL}/posts/${this.props.postId}`, {
+      fetch(`${baseURL}/posts/${this.props.postId}`, {
         method: 'GET',
-        headers: this.headers
+        headers
       })
       .then((res) => res.json())
       .then((post) => this.setState({ post }))

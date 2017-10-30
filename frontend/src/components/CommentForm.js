@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
 import uuidv4 from 'uuid/v4';
+import { baseURL, headers } from '../apiConfig.js'
 
 export default class CommentForm extends Component {
 
@@ -19,13 +20,6 @@ export default class CommentForm extends Component {
     redirect: false
   }
 
-  baseURL = 'http://localhost:3001'
-
-  headers = {
-    'Authorization': 'totesauthd',
-    'Content-Type': 'application/json'
-  };
-
   get heading() {
     if (this.props.id) return 'Edit Comment';
     return 'New Comment';
@@ -34,10 +28,10 @@ export default class CommentForm extends Component {
   actionData(e) {
     const { id } = this.props;
 
-    const url = `${this.baseURL}/comments`
+    const url = `${baseURL}/comments`
 
     let options = {
-      headers: this.headers,
+      headers,
       method: 'POST',
       body: JSON.stringify(this.state.comment)
     };
@@ -79,9 +73,9 @@ export default class CommentForm extends Component {
     const { id } = this.props;
 
     if (id) {
-      fetch(`${this.baseURL}/comments/${id}`, {
+      fetch(`${baseURL}/comments/${id}`, {
         method: 'GET',
-        headers: this.headers
+        headers
       })
       .then((res) => res.json())
       .then((comment) => this.setState({ comment }))
