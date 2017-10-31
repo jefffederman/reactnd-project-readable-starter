@@ -114,3 +114,10 @@ export function getCategories() {
     }))
   }
 }
+
+export function submitComment(url, options, parentId) {
+  return (dispatch) => {
+    return fetch(url, options)
+    .then(() => getComments(parentId)(dispatch))
+  }
+}

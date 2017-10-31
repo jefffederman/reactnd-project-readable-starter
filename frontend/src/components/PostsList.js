@@ -139,7 +139,7 @@ PostsList.propTypes = {
       parentId: PropTypes.string,
       author: PropTypes.string,
       body: PropTypes.string,
-      timestamp: PropTypes.string.isRequired,
+      timestamp: PropTypes.number.isRequired,
       deleted: PropTypes.bool.isRequired
     })
   ),

@@ -15,7 +15,8 @@ import {
   getPost,
   deleteResource,
   getComments,
-  getCategories
+  getCategories,
+  submitComment
 } from '../actions';
 
 class App extends Component {
@@ -44,8 +45,8 @@ class App extends Component {
       onDeleteResource,
       posts,
       comments,
-      onGetComments,
       categories,
+      onSubmitComment,
       meta
     } = this.props;
     return (
@@ -67,14 +68,14 @@ class App extends Component {
           <Route path="/posts/:postId/comments/new" render={({ match }) => (
             <CommentForm
               parentId={match.params.postId}
-              onGetComments={onGetComments}
+              onSubmitComment={onSubmitComment}
             />
           )} />
           <Route path="/posts/:postId/comments/:id/edit" render={({ match }) => (
             <CommentForm
               parentId={match.params.postId}
-              onGetComments={onGetComments}
               id={match.params.id}
+              onSubmitComment={onSubmitComment}
             />
           )} />
           <Route path="/:resource/:id/destroy" render={({ match, location }) => {
@@ -146,7 +147,8 @@ const mapDispatchToProps = (dispatch) => ({
   onGetPost: (id) => dispatch(getPost(id)),
   onDeleteResource: (id, resource) => dispatch(deleteResource(id, resource)),
   onGetComments: (id) => dispatch(getComments(id)),
-  onGetCategories: () => dispatch(getCategories())
+  onGetCategories: () => dispatch(getCategories()),
+  onSubmitComment: (url, options, parentId) => dispatch(submitComment(url, options, parentId))
 })
 
 // FIXME: See https://github.com/reactjs/react-redux/blob/master/docs/troubleshooting.md#my-views-arent-updating-when-something-changes-outside-of-redux

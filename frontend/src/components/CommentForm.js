@@ -25,7 +25,7 @@ export default class CommentForm extends Component {
     return 'New Comment';
   }
 
-  actionData(e) {
+  actionData() {
     const { id } = this.props;
 
     const url = `${baseURL}/comments`
@@ -51,10 +51,8 @@ export default class CommentForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    const { url, options } = this.actionData(e);
-    const { onGetComments, parentId } = this.props;
-    fetch(url, options)
-    .then(() => onGetComments(parentId))
+    const { url, options } = this.actionData();
+    this.props.onSubmitComment(url, options, this.props.parentId)
     .then(() => this.setState({ redirect: true }))
   }
 
@@ -133,5 +131,5 @@ export default class CommentForm extends Component {
 CommentForm.propTypes = {
   id: PropTypes.string,
   parentId: PropTypes.string.isRequired,
-  onGetComments: PropTypes.func.isRequired
+  onSubmitComment: PropTypes.func.isRequired
 }

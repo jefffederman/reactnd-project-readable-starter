@@ -75,14 +75,14 @@ PostDetail.propTypes = {
     id: PropTypes.string.isRequired,
     parentId: PropTypes.string,
     deleted: PropTypes.bool.isRequired
-  }).isRequired,
+  }),
   comments: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       parentId: PropTypes.string,
       author: PropTypes.string,
       body: PropTypes.string,
-      timestamp: PropTypes.string.isRequired,
+      timestamp: PropTypes.number.isRequired,
       deleted: PropTypes.bool.isRequired
     })
   )
