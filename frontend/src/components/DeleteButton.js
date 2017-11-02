@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-// direction must be either 'up' or 'down'
 export default function DeleteButton({ id, resourceType, parentId }) {
   let href = `/${resourceType}/${id}/destroy`
 
