@@ -87,7 +87,7 @@ export function submitPost(url, options) {
     return fetch(url, options)
     .then(() => dispatch({
       type: POST_POST,
-      currentPost: defaultPost
+      currentPost: defaultPost()
     }))
     .then(() => getPosts()(dispatch))
   }
@@ -149,7 +149,7 @@ export function submitComment(url, options, parentId) {
     return fetch(url, options)
     .then(() => dispatch({
       type: POST_COMMENT,
-      currentComment: defaultComment
+      currentComment: defaultComment()
     }))
     .then(() => getComments(parentId)(dispatch))
   }

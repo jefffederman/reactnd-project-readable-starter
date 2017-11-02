@@ -17,7 +17,6 @@ import {
 function posts(posts = [], action) {
   switch (action.type) {
   case GET_POSTS:
-    // FIXME: get routing to trigger action dispatch for query params
     const { sort, dir } = action;
     const sorted = action.posts.sort((a, b) => a[sort] - b[sort]);
     if (dir === 'desc') {

@@ -16,9 +16,9 @@ const store = createStore(
   reducer,
   {
     posts: [],
-    currentPost: defaultPost,
+    currentPost: defaultPost(),
     comments: [],
-    currentComment: defaultComment,
+    currentComment: defaultComment(),
     categories: [],
     meta: {}
   },
