@@ -6,6 +6,8 @@ export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const GET_COMMENTS = 'GET_COMMENTS'
 export const GET_CATEGORIES = 'GET_CATEGORIES'
 export const VOTE = 'VOTE'
+export const GET_COMMENT = 'GET_COMMENT'
+export const PATCH_COMMENT = 'PATCH_COMMENT'
 
 export function getPosts(sort, dir) {
   if (typeof sort === 'undefined') {
@@ -119,5 +121,31 @@ export function submitComment(url, options, parentId) {
   return (dispatch) => {
     return fetch(url, options)
     .then(() => getComments(parentId)(dispatch))
+  }
+}
+
+export function getComment(id) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/comments/${id}`, {
+      method: 'GET',
+      headers
+    })
+    .then((res) => res.json())
+    .then((currentComment) => dispatch({
+      type: GET_COMMENT,
+      currentComment
+    }))
+  }
+}
+
+export function patchComment(comment, name, value) {
+  return (dispatch) => {
+    dispatch({
+      type: PATCH_COMMENT,
+      currentComment: {
+        ...comment,
+        [name]: value
+      }
+    })
   }
 }

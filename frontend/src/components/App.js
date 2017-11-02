@@ -16,17 +16,12 @@ import {
   deleteResource,
   getComments,
   getCategories,
-  submitComment
+  submitComment,
+  getComment,
+  patchComment
 } from '../actions';
 
 class App extends Component {
-  state = {
-    posts: [],
-    currentPost: null,
-    comments: [],
-    categories: [],
-    meta: {}
-  }
 
   componentDidMount() {
     const { onGetPosts, search, onGetComments, onGetCategories } = this.props;
@@ -45,8 +40,11 @@ class App extends Component {
       onDeleteResource,
       posts,
       comments,
+      currentComment,
       categories,
       onSubmitComment,
+      onGetComment,
+      onPatchComment,
       meta
     } = this.props;
     return (
@@ -69,6 +67,8 @@ class App extends Component {
             <CommentForm
               parentId={match.params.postId}
               onSubmitComment={onSubmitComment}
+              currentComment={currentComment}
+              onPatchComment={onPatchComment}
             />
           )} />
           <Route path="/posts/:postId/comments/:id/edit" render={({ match }) => (
@@ -76,6 +76,9 @@ class App extends Component {
               parentId={match.params.postId}
               id={match.params.id}
               onSubmitComment={onSubmitComment}
+              onGetComment={onGetComment}
+              currentComment={currentComment}
+              onPatchComment={onPatchComment}
             />
           )} />
           <Route path="/:resource/:id/destroy" render={({ match, location }) => {
@@ -131,11 +134,19 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = ({ posts, currentPost, comments, categories, meta }) => {
+const mapStateToProps = ({
+  posts,
+  currentPost,
+  comments,
+  currentComment,
+  categories,
+  meta
+}) => {
   return {
     posts,
     currentPost,
     comments,
+    currentComment,
     categories,
     meta
   }
@@ -148,7 +159,11 @@ const mapDispatchToProps = (dispatch) => ({
   onDeleteResource: (id, resource) => dispatch(deleteResource(id, resource)),
   onGetComments: (id) => dispatch(getComments(id)),
   onGetCategories: () => dispatch(getCategories()),
-  onSubmitComment: (url, options, parentId) => dispatch(submitComment(url, options, parentId))
+  onSubmitComment: (url, options, parentId) => dispatch(submitComment(url, options, parentId)),
+  onGetComment: (id) => dispatch(getComment(id)),
+  onPatchComment: (comment, name, value) => dispatch(patchComment(
+    comment, name, value
+  ))
 })
 
 // FIXME: See https://github.com/reactjs/react-redux/blob/master/docs/troubleshooting.md#my-views-arent-updating-when-something-changes-outside-of-redux

@@ -9,14 +9,6 @@ import { baseURL, headers } from '../apiConfig.js'
 export default class CommentForm extends Component {
 
   state = {
-    comment: {
-      id: uuidv4(),
-      parentId: this.props.parentId,
-      author: '',
-      body: '',
-      timestamp: Date.now(),
-      deleted: false
-    },
     redirect: false
   }
 
@@ -26,14 +18,14 @@ export default class CommentForm extends Component {
   }
 
   actionData() {
-    const { id } = this.props;
+    const { id, currentComment } = this.props;
 
     const url = `${baseURL}/comments`
 
     let options = {
       headers,
       method: 'POST',
-      body: JSON.stringify(this.state.comment)
+      body: JSON.stringify(currentComment)
     };
 
     if (id) {
@@ -58,30 +50,22 @@ export default class CommentForm extends Component {
 
   handleChange(e) {
     const { name, value } = e.target;
+    const { onPatchComment, currentComment } = this.props;
     e.preventDefault()
-    this.setState({
-      comment: {
-        ...this.state.comment,
-        [name]: value
-      }
-    })
+    onPatchComment(currentComment, name, value)
   }
 
   componentDidMount() {
-    const { id } = this.props;
+    const { id, onGetComment } = this.props;
 
     if (id) {
-      fetch(`${baseURL}/comments/${id}`, {
-        method: 'GET',
-        headers
-      })
-      .then((res) => res.json())
-      .then((comment) => this.setState({ comment }))
+      onGetComment(id)
     }
   }
 
   render() {
-    const { comment, redirect } = this.state;
+    const { redirect } = this.state;
+    const { currentComment } = this.props;
 
     const parentHref = `/posts/${this.props.parentId}`;
 
@@ -101,7 +85,7 @@ export default class CommentForm extends Component {
                 className="input"
                 type="text"
                 name="author"
-                value={comment.author}
+                value={currentComment.author}
                 onChange={(e) => this.handleChange(e)}
               />
             </div>
@@ -113,7 +97,7 @@ export default class CommentForm extends Component {
               <textarea
                 className="textarea"
                 name="body"
-                value={comment.body}
+                value={currentComment.body}
                 onChange={(e) => this.handleChange(e)}
               />
             </div>
@@ -131,5 +115,14 @@ export default class CommentForm extends Component {
 CommentForm.propTypes = {
   id: PropTypes.string,
   parentId: PropTypes.string.isRequired,
-  onSubmitComment: PropTypes.func.isRequired
+  onSubmitComment: PropTypes.func.isRequired,
+  currentComment: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    parentId: PropTypes.string,
+    author: PropTypes.string,
+    body: PropTypes.string,
+    timestamp: PropTypes.number.isRequired,
+    deleted: PropTypes.bool.isRequired
+  }).isRequired,
+  onPatchComment: PropTypes.func.isRequired
 }

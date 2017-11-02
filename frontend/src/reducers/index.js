@@ -6,7 +6,9 @@ import {
   DELETE_COMMENT,
   GET_COMMENTS,
   GET_CATEGORIES,
-  VOTE
+  VOTE,
+  GET_COMMENT,
+  PATCH_COMMENT
 } from '../actions';
 
 function posts(posts = [], action) {
@@ -95,6 +97,17 @@ function comments(comments = [], action) {
   }
 }
 
+function currentComment(currentComment = null, action) {
+  switch (action.type) {
+  case GET_COMMENT:
+    return action.currentComment
+  case PATCH_COMMENT:
+    return action.currentComment
+  default:
+    return currentComment;
+  }
+}
+
 function categories(categories = [], action) {
   switch (action.type) {
   case GET_CATEGORIES:
@@ -126,6 +139,7 @@ export default combineReducers({
   posts,
   currentPost,
   comments,
+  currentComment,
   categories,
   meta
 });
