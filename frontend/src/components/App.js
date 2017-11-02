@@ -13,6 +13,8 @@ import {
   getPosts,
   vote,
   getPost,
+  submitPost,
+  patchPost,
   deleteResource,
   getComments,
   getCategories,
@@ -36,6 +38,8 @@ class App extends Component {
       onGetPosts,
       onVote,
       onGetPost,
+      onSubmitPost,
+      onPatchPost,
       currentPost,
       onDeleteResource,
       posts,
@@ -54,6 +58,10 @@ class App extends Component {
             <PostForm
               onGetPosts={onGetPosts}
               categories={categories}
+              onSubmitPost={onSubmitPost}
+              onGetPost={onGetPost}
+              onPatchPost={onPatchPost}
+              currentPost={currentPost}
             />
           )} />
           <Route path="/posts/:id/edit" render={({ match }) => (
@@ -61,6 +69,10 @@ class App extends Component {
               postId={match.params.id}
               onGetPosts={onGetPosts}
               categories={categories}
+              onSubmitPost={onSubmitPost}
+              onGetPost={onGetPost}
+              onPatchPost={onPatchPost}
+              currentPost={currentPost}
             />
           )} />
           <Route path="/posts/:postId/comments/new" render={({ match }) => (
@@ -156,6 +168,10 @@ const mapDispatchToProps = (dispatch) => ({
   onGetPosts: (sort, dir) => dispatch(getPosts(sort, dir)),
   onVote: (id, option, type) => dispatch(vote(id, option, type)),
   onGetPost: (id) => dispatch(getPost(id)),
+  onSubmitPost: (url, options) => dispatch(submitPost(url, options)),
+  onPatchPost: (post, name, value) => dispatch(patchPost(
+    post, name, value
+  )),
   onDeleteResource: (id, resource) => dispatch(deleteResource(id, resource)),
   onGetComments: (id) => dispatch(getComments(id)),
   onGetCategories: () => dispatch(getCategories()),

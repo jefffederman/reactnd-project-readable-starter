@@ -3,12 +3,15 @@ import {
   GET_POSTS,
   GET_POST,
   DELETE_POST,
+  PATCH_POST,
+  POST_POST,
   DELETE_COMMENT,
   GET_COMMENTS,
-  GET_CATEGORIES,
-  VOTE,
   GET_COMMENT,
-  PATCH_COMMENT
+  PATCH_COMMENT,
+  POST_COMMENT,
+  GET_CATEGORIES,
+  VOTE
 } from '../actions';
 
 function posts(posts = [], action) {
@@ -51,11 +54,17 @@ function currentPost(currentPost = null, action) {
   case GET_POST:
     return action.currentPost;
 
+  case PATCH_POST:
+    return action.currentPost;
+
   case VOTE:
     if (action.resourceType === 'posts') {
       return action.resource;
     }
     return currentPost;
+
+  case POST_POST:
+    return action.currentPost;
 
   default:
     return currentPost;
@@ -102,6 +111,8 @@ function currentComment(currentComment = null, action) {
   case GET_COMMENT:
     return action.currentComment
   case PATCH_COMMENT:
+    return action.currentComment
+  case POST_COMMENT:
     return action.currentComment
   default:
     return currentComment;

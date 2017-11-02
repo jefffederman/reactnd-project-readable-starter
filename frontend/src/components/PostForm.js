@@ -3,21 +3,11 @@ import { Redirect, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
-import uuidv4 from 'uuid/v4';
 import { baseURL, headers } from '../apiConfig.js'
 
 export default class PostForm extends Component {
 
   state = {
-    post: {
-      id: uuidv4(),
-      title: '',
-      author: '',
-      body: '',
-      category: 'react',
-      timestamp: Date.now(),
-      deleted: false
-    },
     redirect: false
   }
 
@@ -27,14 +17,14 @@ export default class PostForm extends Component {
   }
 
   actionData(e) {
-    const { postId } = this.props;
+    const { postId, currentPost } = this.props;
 
     const url = `${baseURL}/posts`
 
     let options = {
       headers,
       method: 'POST',
-      body: JSON.stringify(this.state.post)
+      body: JSON.stringify(currentPost)
     };
 
     if (postId) {
@@ -53,38 +43,31 @@ export default class PostForm extends Component {
   handleSubmit(e) {
     e.preventDefault()
     const { url, options } = this.actionData(e);
-    const { onGetPosts } = this.props;
-    fetch(url, options)
-    .then(() => onGetPosts())
+    this.props.onSubmitPost(url, options)
     .then(() => this.setState({ redirect: true }))
   }
 
   handleChange(e) {
     const { name, value } = e.target;
+    const { onPatchPost, currentPost } = this.props;
     e.preventDefault()
-    this.setState({
-      post: {
-        ...this.state.post,
-        [name]: value
-      }
-    })
+    onPatchPost(currentPost, name, value);
   }
 
   componentDidMount() {
-    const { postId } = this.props;
+    const { postId, onGetPost } = this.props;
 
     if (postId) {
-      fetch(`${baseURL}/posts/${this.props.postId}`, {
-        method: 'GET',
-        headers
-      })
-      .then((res) => res.json())
-      .then((post) => this.setState({ post }))
+      onGetPost(postId)
     }
   }
 
   render() {
-    const { post, redirect } = this.state;
+    const { redirect } = this.state;
+
+    const { currentPost, categories } = this.props;
+
+    const { title, author, category, body } = currentPost;
 
     if (redirect) {
       return <Redirect push to="/" />;
@@ -102,7 +85,7 @@ export default class PostForm extends Component {
                 className="input"
                 type="text"
                 name="title"
-                value={post.title}
+                value={title}
                 onChange={(e) => this.handleChange(e)}
               />
             </div>
@@ -115,7 +98,7 @@ export default class PostForm extends Component {
                 className="input"
                 type="text"
                 name="author"
-                value={post.author}
+                value={author}
                 onChange={(e) => this.handleChange(e)}
               />
             </div>
@@ -126,10 +109,10 @@ export default class PostForm extends Component {
             <div className="select">
               <select
                 name="category"
-                value={post.category}
+                value={category}
                 onChange={(e) => this.handleChange(e)}
               >
-                {this.props.categories.map((category) => (
+                {categories.map((category) => (
                   <option value={category.name}>{category.name}</option>
                 ))}
               </select>
@@ -142,7 +125,7 @@ export default class PostForm extends Component {
               <textarea
                 className="textarea"
                 name="body"
-                value={post.body}
+                value={body}
                 onChange={(e) => this.handleChange(e)}
               />
             </div>

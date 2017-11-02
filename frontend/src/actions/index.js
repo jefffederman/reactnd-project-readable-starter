@@ -1,13 +1,17 @@
 import { baseURL, headers } from '../apiConfig.js'
+import { defaultPost, defaultComment } from '../defaultStates';
 export const GET_POSTS = 'GET_POSTS'
 export const GET_POST = 'GET_POST'
+export const PATCH_POST = 'PATCH_POST'
 export const DELETE_POST = 'DELETE_POST'
+export const POST_POST = 'POST_POST'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const GET_COMMENTS = 'GET_COMMENTS'
-export const GET_CATEGORIES = 'GET_CATEGORIES'
-export const VOTE = 'VOTE'
 export const GET_COMMENT = 'GET_COMMENT'
 export const PATCH_COMMENT = 'PATCH_COMMENT'
+export const POST_COMMENT = 'POST_COMMENT'
+export const GET_CATEGORIES = 'GET_CATEGORIES'
+export const VOTE = 'VOTE'
 
 export function getPosts(sort, dir) {
   if (typeof sort === 'undefined') {
@@ -78,6 +82,29 @@ export function getPost(id) {
   }
 }
 
+export function submitPost(url, options) {
+  return (dispatch) => {
+    return fetch(url, options)
+    .then(() => dispatch({
+      type: POST_POST,
+      currentPost: defaultPost
+    }))
+    .then(() => getPosts()(dispatch))
+  }
+}
+
+export function patchPost(post, name, value) {
+  return (dispatch) => {
+    dispatch({
+      type: PATCH_POST,
+      currentPost: {
+        ...post,
+        [name]: value
+      }
+    })
+  }
+}
+
 export function deleteResource(id, resource) {
   return (dispatch) => {
     return fetch(`${baseURL}/${resource}/${id}`, {
@@ -120,6 +147,10 @@ export function getCategories() {
 export function submitComment(url, options, parentId) {
   return (dispatch) => {
     return fetch(url, options)
+    .then(() => dispatch({
+      type: POST_COMMENT,
+      currentComment: defaultComment
+    }))
     .then(() => getComments(parentId)(dispatch))
   }
 }

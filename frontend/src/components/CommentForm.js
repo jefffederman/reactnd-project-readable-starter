@@ -3,7 +3,6 @@ import { Redirect, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import 'font-awesome/css/font-awesome.css';
 import 'bulma/css/bulma.css';
-import uuidv4 from 'uuid/v4';
 import { baseURL, headers } from '../apiConfig.js'
 
 export default class CommentForm extends Component {
@@ -18,14 +17,19 @@ export default class CommentForm extends Component {
   }
 
   actionData() {
-    const { id, currentComment } = this.props;
+    const { id, currentComment, parentId } = this.props;
+
+    const commentData = {
+      ...currentComment,
+      parentId
+    }
 
     const url = `${baseURL}/comments`
 
     let options = {
       headers,
       method: 'POST',
-      body: JSON.stringify(currentComment)
+      body: JSON.stringify(commentData)
     };
 
     if (id) {
